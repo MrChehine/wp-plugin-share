@@ -1,0 +1,14 @@
+{
+    "name": "chehine/oop-social-share",
+    "autoload": {
+        "psr-4": {
+            "OopSocialShare\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Chehine AMMARI"
+        }
+    ],
+    "require": {}
+}
