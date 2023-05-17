@@ -36,7 +36,6 @@ class WpCoreWrapper {
 		callable|string|array $callback = '',
 		int|float $position = null): string|false
 	{
-		update_option('name','value');
 		return add_submenu_page($parent_slug,$page_title,$menu_title,$capability,$menu_slug,$callback,$position);
 	}
 

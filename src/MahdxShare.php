@@ -14,6 +14,8 @@ class MahdxShare {
 	private ButtonResolver $button_resolver;
 	private MahdxShareHelper $helper;
 
+	private array $options;
+
 	public function __construct() {
 	}
 
@@ -34,13 +36,18 @@ class MahdxShare {
 	public function init(): void
 	{
 		$this->prepareObjects();
+		$plugin_base_name = plugin_basename(dirname(__FILE__,'2').'/oop-social-share.php');
+
+		$this->core_wrapper->add_action('activate_'.$plugin_base_name, [$this,'activate']);
+		$this->core_wrapper->add_action('admin_init', [$this->button_resolver,'init']);
 		$this->core_wrapper->add_action('admin_menu', [$this->admin_settings,'createPage']);
 		$this->core_wrapper->add_action('wp_ajax_mahdx_social_share_save_settings', [$this->admin_settings,'handleSettingsUpdate']);
 	}
 
 	public function activate(): void
 	{
-		//TODO
+		$this->options['buttons'] = include dirname( __FILE__, 1 ) . '/config/config.php';
+		update_option('mahdx_social_share', $this->options);
 	}
 
 	public function deactivate(): void
@@ -50,7 +57,7 @@ class MahdxShare {
 
 	public function uninstall(): void
 	{
-		//TODO
+		delete_option('mahdx_social_share');
 	}
 
 }

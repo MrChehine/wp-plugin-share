@@ -12,7 +12,6 @@
 
 use OopSocialShare\MahdxShare;
 
-//require_once 'src/MahdxShare.php';
 require_once 'vendor/autoload.php';
 
 if(!defined('MAHDX_PLUGIN_ROOT_URI')) {
