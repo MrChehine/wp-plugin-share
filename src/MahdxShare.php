@@ -42,11 +42,14 @@ class MahdxShare {
 		$this->core_wrapper->add_action('admin_init', [$this->button_resolver,'init']);
 		$this->core_wrapper->add_action('admin_menu', [$this->admin_settings,'createPage']);
 		$this->core_wrapper->add_action('wp_ajax_mahdx_social_share_save_settings', [$this->admin_settings,'handleSettingsUpdate']);
+
+		add_filter('the_content', [$this->button_resolver,'renderShareDiv']);
 	}
 
 	public function activate(): void
 	{
 		$this->options['buttons'] = include dirname( __FILE__, 1 ) . '/config/config.php';
+		$this->options['active_buttons'] = $this->options['buttons'];
 		update_option('mahdx_social_share', $this->options);
 	}
 
