@@ -37,11 +37,11 @@ class ButtonResolver {
 		update_option('mahdx_social_share',$this->options);
 	}
 
-	public function renderButton(string $id) : string
+	public function renderButton(string $id, string $post_url, string $post_title, string $excerpt = '') : string
 	{
 		$button = $this->options['buttons'][$id];
 		ob_start();
-		$url = $button['url'];
+		$url = sprintf($button['url'],$post_url,$post_title, $excerpt);
 		$icon = $button['icon'];
 		$label = $button['label'];
 		include "template.php";
@@ -59,11 +59,13 @@ class ButtonResolver {
 			//var_dump($post->post_title);
 			//var_dump($post->post_excerpt);
 			//var_dump(get_post_permalink());
-			var_dump(get_permalink());
+			//var_dump(get_permalink());
+			$post_url = get_permalink();
+			$post_title = $post->post_title;
 			$html = "<div class='mahdx-social-share-container'>";
 			foreach ($buttons as $id => $details)
 			{
-				$html .= $this->renderButton($id);
+				$html .= $this->renderButton($id, $post_url, $post_title);
 			}
 			$html .= "</div>";
 			$content .= $html;
