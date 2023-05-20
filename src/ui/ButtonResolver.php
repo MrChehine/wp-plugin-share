@@ -51,11 +51,16 @@ class ButtonResolver {
 
 	public function renderShareDiv($content): string
 	{
+		global $post;
 		$this->options = get_option('mahdx_social_share');
 		$buttons = $this->options['active_buttons'];
 		if($buttons && is_single())
 		{
-			$html = "<div>";
+			//var_dump($post->post_title);
+			//var_dump($post->post_excerpt);
+			//var_dump(get_post_permalink());
+			var_dump(get_permalink());
+			$html = "<div class='mahdx-social-share-container'>";
 			foreach ($buttons as $id => $details)
 			{
 				$html .= $this->renderButton($id);
@@ -65,6 +70,14 @@ class ButtonResolver {
 			return $content;
 		}
 		return $content;
+	}
+
+	public function loadStylesheet(): void
+	{
+		if(is_singular()) {
+			wp_register_style( 'mahdx-social-share-style', plugins_url("oop-social-share/src/assets/style.css"));
+			wp_enqueue_style( 'mahdx-social-share-style');
+		}
 	}
 
 }

@@ -1,0 +1,26 @@
+.mahdx-social-share-container {
+    display: flex;
+    flex-direction: row;
+    font-family: "Open Sans", sans-serif;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mahdx-social-share-link {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mahdx-social-share-button-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.mahdx-social-share-button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}

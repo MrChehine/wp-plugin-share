@@ -58,5 +58,14 @@ class AdminSettings {
 		}
 	}
 
+	public function loadStylesheet(): void
+	{
+		global $pagenow;
+		if($pagenow == $this->parent_slug && $_GET['page'] == $this->menu_slug) {
+			wp_register_style( 'mahdx-social-share-admin-style', plugins_url("oop-social-share/src/admin/view/css/style.css"));
+			wp_enqueue_style( 'mahdx-social-share-admin-style');
+		}
+	}
+
 
 }

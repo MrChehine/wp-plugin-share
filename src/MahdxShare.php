@@ -39,6 +39,8 @@ class MahdxShare {
 		$plugin_base_name = plugin_basename(dirname(__FILE__,'2').'/oop-social-share.php');
 
 		$this->core_wrapper->add_action('activate_'.$plugin_base_name, [$this,'activate']);
+		$this->core_wrapper->add_action('wp_enqueue_scripts', [$this->button_resolver,'loadStylesheet']);
+		$this->core_wrapper->add_action('admin_enqueue_scripts', [$this->admin_settings,'loadStylesheet']);
 		$this->core_wrapper->add_action('admin_init', [$this->button_resolver,'init']);
 		$this->core_wrapper->add_action('admin_menu', [$this->admin_settings,'createPage']);
 		$this->core_wrapper->add_action('wp_ajax_mahdx_social_share_save_settings', [$this->admin_settings,'handleSettingsUpdate']);
