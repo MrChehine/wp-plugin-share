@@ -45,7 +45,7 @@ class AdminSettings {
 	}
 
 	/**
-	 * Executed when the admin save the settings
+	 * Executed when the admin save the settings (in case of AJAX submit)
 	 *
 	 * @return void
 	 */
@@ -77,7 +77,7 @@ class AdminSettings {
 		$this->addSettingsSection($section_id, 'Social Share General Settings',$this->menu_slug);
 		//Add fields
 		$this->registerField('radio','placement','Placement: ', $section_id, $this->menu_slug, ['top','bottom','none']);
-		$this->registerField('checkbox','sites','Sites', $section_id, $this->menu_slug, get_option('mahdx_social_share')['buttons']);
+		$this->registerField('checkbox','active_buttons','Sites', $section_id, $this->menu_slug, get_option('mahdx_social_share')['buttons']);
 		$this->registerField('checkbox','post_types','Post Types', $section_id, $this->menu_slug,get_post_types(['public' => true]));
 
 	}
@@ -140,6 +140,18 @@ class AdminSettings {
 		$options = $args['args'];
 		include $view;
 		echo ob_get_clean();
+	}
+
+	public function sanitizeOption(string | array | null $sanitized_value, string $option_name, string $original_value = '')
+	{
+		if($sanitized_value == null)
+		{
+			return;
+		}
+		$options = get_option('mahdx_social_share');
+		$options[$option_name] = $sanitized_value;
+		update_option('mahdx_social_share',$options);
+		//return $sanitized_value;
 	}
 
 }
