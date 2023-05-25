@@ -42,22 +42,31 @@ class MahdxShare {
 		$this->core_wrapper->add_action('wp_enqueue_scripts', [$this->button_resolver,'loadStylesheet']);
 		$this->core_wrapper->add_action('admin_enqueue_scripts', [$this->admin_settings,'loadStylesheet']);
 		$this->core_wrapper->add_action('admin_init', [$this->button_resolver,'init']);
+		$this->core_wrapper->add_action('admin_init', [$this->admin_settings,'settingsInit']);
 		$this->core_wrapper->add_action('admin_menu', [$this->admin_settings,'createPage']);
 		$this->core_wrapper->add_action('wp_ajax_mahdx_social_share_save_settings', [$this->admin_settings,'handleSettingsUpdate']);
 
 		add_filter('the_content', [$this->button_resolver,'renderShareDiv']);
+		add_filter('sanitize_option_placement', [$this->admin_settings,'sanitizeOption'],10,2);
+		add_filter('sanitize_option_active_buttons', [$this->admin_settings,'sanitizeOption'],10,2);
+		add_filter('sanitize_option_post_types', [$this->admin_settings,'sanitizeOption'],10,2);
 	}
 
 	public function activate(): void
 	{
 		$this->options['buttons'] = include dirname( __FILE__, 1 ) . '/config/config.php';
-		$this->options['active_buttons'] = $this->options['buttons'];
+		$this->options['placement'] = 'none';
+		$this->options['active_buttons'] = [];
+		//$this->options['active_buttons'] = array_keys($this->options['buttons']);
+		$this->options['post_types'] = [];
+		//$this->options['post_types'] = ['post','page','attachement'];
 		update_option('mahdx_social_share', $this->options);
 	}
 
 	public function deactivate(): void
 	{
 		//TODO
+		delete_option('mahdx_social_share');
 	}
 
 	public function uninstall(): void
