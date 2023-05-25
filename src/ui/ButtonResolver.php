@@ -54,7 +54,7 @@ class ButtonResolver {
 		global $post;
 		$this->options = get_option('mahdx_social_share');
 		$buttons = $this->options['active_buttons'];
-		if($buttons && is_singular() && in_array(get_post_type(), $this->options['post_types']))
+		if($buttons && is_singular() && isset($this->options['post_types']) && in_array(get_post_type(), $this->options['post_types']))
 		{
 			$post_url = get_permalink();
 			$post_title = $post->post_title;

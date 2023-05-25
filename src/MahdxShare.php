@@ -55,7 +55,11 @@ class MahdxShare {
 	public function activate(): void
 	{
 		$this->options['buttons'] = include dirname( __FILE__, 1 ) . '/config/config.php';
-		//$this->options['active_buttons'] = $this->options['buttons'];
+		$this->options['placement'] = 'none';
+		$this->options['active_buttons'] = [];
+		//$this->options['active_buttons'] = array_keys($this->options['buttons']);
+		$this->options['post_types'] = [];
+		//$this->options['post_types'] = ['post','page','attachement'];
 		update_option('mahdx_social_share', $this->options);
 	}
 

@@ -59,7 +59,7 @@ class AdminSettings {
 	public function loadStylesheet(): void
 	{
 		global $pagenow;
-		if($pagenow == $this->parent_slug && $_GET['page'] == $this->menu_slug) {
+		if($pagenow == $this->parent_slug && isset($_GET['page']) && $_GET['page'] == $this->menu_slug) {
 			wp_register_style( 'mahdx-social-share-admin-style', plugins_url("oop-social-share/src/admin/view/css/style.css"));
 			wp_enqueue_style( 'mahdx-social-share-admin-style');
 		}
@@ -138,20 +138,54 @@ class AdminSettings {
 		$name = $args['name'];
 		$type = $args['type'];
 		$options = $args['args'];
+		$this->mapCheckedOptions($name, $options);
+		//$this->mapCheckedOptions($name,$options);
 		include $view;
 		echo ob_get_clean();
 	}
 
 	public function sanitizeOption(string | array | null $sanitized_value, string $option_name, string $original_value = '')
 	{
+		$options = get_option('mahdx_social_share');
 		if($sanitized_value == null)
 		{
+			$options[$option_name] = [];
+			update_option('mahdx_social_share',$options);
 			return;
 		}
-		$options = get_option('mahdx_social_share');
 		$options[$option_name] = $sanitized_value;
 		update_option('mahdx_social_share',$options);
 		//return $sanitized_value;
+	}
+
+	private function mapCheckedOptions(string $option_name, array &$accepted_values): void
+	{
+		$options = get_option('mahdx_social_share');
+		$saved_value = $options[$option_name];
+
+		if(gettype($saved_value) == "array")
+		{
+			foreach ($accepted_values as $key => $value)
+			{
+				if(in_array($key, $saved_value))
+				{
+					$accepted_values[$key] = [$value, 'checked'];
+				} else {
+					$accepted_values[$key] = [$value, ''];
+				}
+			}
+		} elseif(gettype($saved_value) == "string")
+		{
+			foreach ($accepted_values as $key => $value)
+			{
+				if($saved_value == $value)
+				{
+					$accepted_values[$key] = [$value, 'checked'];
+				} else {
+					$accepted_values[$key] = [$value, ''];
+				}
+			}
+		}
 	}
 
 }
